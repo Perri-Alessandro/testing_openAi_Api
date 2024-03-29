@@ -11,7 +11,7 @@ const App = () => {
       <header>
         <NavBar />
       </header>
-      <main className="flex-grow-1">
+      <main className="flex-grow-1 bg-black">
         <Main />
       </main>
       <Footer />

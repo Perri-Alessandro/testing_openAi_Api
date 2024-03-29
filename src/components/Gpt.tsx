@@ -1,10 +1,13 @@
 import { useState } from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 const Gpt: React.FC = () => {
   const [response, setResponse] = useState<string>("");
   const [input, setInput] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function fetchCompletion(question: string) {
+    setIsLoading(true);
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
     const requestBody = {
       model: "gpt-3.5-turbo",
@@ -24,12 +27,18 @@ const Gpt: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const content =
-          data.choices[0].message.content ??
-          "Non sono riuscito a trovare una risposta.";
-        setResponse(content);
+        setIsLoading(false);
+        if (data.choices && data.choices.length > 0) {
+          const content =
+            data.choices[0].message.content ??
+            "Non sono riuscito a trovare una risposta.";
+          setResponse(content);
+        } else {
+          setResponse("La risposta non contiene dati validi.");
+        }
       })
       .catch((error) => {
+        setIsLoading(false);
         console.error("Errore durante il fetching della completion: ", error);
         setResponse("Si è verificato un errore nel recupero della risposta.");
       });
@@ -42,16 +51,26 @@ const Gpt: React.FC = () => {
 
   return (
     <div>
-      <p>GPT Component</p>
+      <p className="text-success fs-2">Ciao! Inserisci qui la tua richiesta:</p>
       <form onSubmit={handleSubmit}>
         <input
+          className="rounded-4"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <button type="submit">Invia</button>
+        <button
+          type="submit"
+          className="ms-3 rounded-4 btn btn-success border-warning"
+        >
+          Dimmi
+        </button>
       </form>
-      <p>Response: {response}</p>
+      {isLoading ? (
+        <Spinner animation="grow" className="bg-success" />
+      ) : (
+        <div className="bg-white rounded-4 mt-3 mb-5">{response}</div>
+      )}
     </div>
   );
 };

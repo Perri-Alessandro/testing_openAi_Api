@@ -54,7 +54,7 @@ main {
     url(../public/ded.png);
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: 800px 800px;
+  background-size: 600px 600px;
   height: 90vh;
   background-color: black;
 }
