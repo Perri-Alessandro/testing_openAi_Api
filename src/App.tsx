@@ -1,43 +1,42 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import polkadot from "./assets/polkadot.webp";
+import ded from "/ded.png";
 import "./App.css";
 import Gpt from "./components/Gpt.jsx";
 import NavBar from "./components/NavBar.jsx";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Footer from "./components/Footer.js";
+import { Col, Container, Row } from "react-bootstrap";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const App = () => {
   return (
-    <div>
+    <div className="w-100 justify-content-between d-flex flex-column">
       <header>
         <NavBar />
       </header>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <Gpt />
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <main className="flex-grow-1">
+        <Container>
+          <Row>
+            <Col>
+              <a href="https://vitejs.dev" target="_blank">
+                <img src={ded} className="logo" alt="Vite logo" />
+              </a>
+              <a href="https://wiki.polkadot.network/" target="_blank">
+                <img
+                  src={polkadot}
+                  className="logo react"
+                  alt="Polkadot logo"
+                />
+              </a>
+            </Col>
+          </Row>
+        </Container>
+        <h1>Polkadot Gpt</h1>
+        <Gpt />
+      </main>
+      <Footer />
     </div>
   );
-}
+};
 
 export default App;

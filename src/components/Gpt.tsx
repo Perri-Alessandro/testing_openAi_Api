@@ -4,9 +4,8 @@ const Gpt: React.FC = () => {
   const [response, setResponse] = useState<string>("");
   const [input, setInput] = useState<string>("");
 
-  // Funzione modificata per usare fetch e .then/.catch
   function fetchCompletion(question: string) {
-    const apiKey = import.meta.env.VITE_OPENAI_API_KEY; // Assumi che la chiave API sia memorizzata in una variabile d'ambiente
+    const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
     const requestBody = {
       model: "gpt-3.5-turbo",
       messages: [
@@ -23,7 +22,7 @@ const Gpt: React.FC = () => {
       },
       body: JSON.stringify(requestBody),
     })
-      .then((response) => response.json()) // Converti la risposta in JSON
+      .then((response) => response.json())
       .then((data) => {
         const content =
           data.choices[0].message.content ??
@@ -36,9 +35,8 @@ const Gpt: React.FC = () => {
       });
   }
 
-  // Gestione dell'invio del form
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Previene il comportamento di submit di default
+    e.preventDefault();
     fetchCompletion(input);
   };
 
