@@ -1,9 +1,10 @@
 @import "./reset.css";
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
 
 #root {
   margin: 0;
-  padding-bottom: 2rem;
   text-align: center;
+  font-family: "Permanent Marker";
 }
 
 .logo {
@@ -40,4 +41,26 @@
 
 .read-the-docs {
   color: #888;
+}
+
+main {
+  background-image: linear-gradient(
+      to right,
+      black,
+      rgba(0, 0, 0, 0) 25%,
+      rgba(0, 0, 0, 0) 75%,
+      black
+    ),
+    url(../public/ded.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 800px 800px;
+  height: 90vh;
+  background-color: black;
+}
+
+@media screen and (max-width: 768px) {
+  main {
+    background-size: 500px 500px;
+  }
 }
