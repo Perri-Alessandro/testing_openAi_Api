@@ -8,10 +8,17 @@ const Gpt = () => {
   const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [response]);
 
   function fetchCompletion(question: string) {
     setIsLoading(true);
@@ -39,14 +46,15 @@ const Gpt = () => {
           const content =
             data.choices[0].message.content ??
             "Non sono riuscito a trovare una risposta.";
-          const updatedResponses = [
-            ...updatedMessages,
+          setResponse((prevResponse) => [
+            ...prevResponse,
+            { role: "user", content: question },
             { role: "assistant", content },
-          ];
-          setResponse(updatedResponses);
+          ]);
         } else {
-          setResponse([
-            ...updatedMessages,
+          setResponse((prevResponse) => [
+            ...prevResponse,
+            { role: "user", content: question },
             {
               role: "assistant",
               content: "La risposta non contiene dati validi.",
@@ -57,8 +65,9 @@ const Gpt = () => {
       .catch((error) => {
         setIsLoading(false);
         console.error("Errore durante il fetching della completion: ", error);
-        setResponse([
-          ...updatedMessages,
+        setResponse((prevResponse) => [
+          ...prevResponse,
+          { role: "user", content: question },
           {
             role: "assistant",
             content: "Si è verificato un errore nel recupero della risposta.",
@@ -92,7 +101,7 @@ const Gpt = () => {
       <p className="text-success text-with-white-border fs-2">
         Hi! Enter your request here:
       </p>
-      <form onSubmit={handleSubmit} className="mb-5">
+      <form onSubmit={handleSubmit} ref={formRef} className="mb-5 pb-4">
         <input
           ref={inputRef}
           className="rounded-4 border-warning"
