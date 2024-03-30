@@ -51,7 +51,9 @@ const Gpt: React.FC = () => {
 
   return (
     <div>
-      <p className="text-success fs-2">Ciao! Inserisci qui la tua richiesta:</p>
+      <p className="text-success text-with-white-border fs-2">
+        Ciao! Inserisci qui la tua richiesta:
+      </p>
       <form onSubmit={handleSubmit}>
         <input
           className="rounded-4"
