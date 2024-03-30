@@ -8,7 +8,7 @@ const Main = () => {
     <Container>
       <Row className="mt-2">
         {" "}
-        <h1 className="text-white">Polkadot Gpt</h1>
+        <h1 className="text-white text-with-black-border">Polkadot Gpt</h1>
       </Row>
       <Row>
         <Col>
