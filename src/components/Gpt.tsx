@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 
-const Gpt: React.FC = () => {
-  const [response, setResponse] = useState<string>("");
+const Gpt = () => {
+  const [response, setResponse] = useState<
+    Array<{ role: string; content: string }>
+  >([]);
   const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   function fetchCompletion(question: string) {
     setIsLoading(true);
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+    const updatedMessages = [...response, { role: "user", content: question }];
+
     const requestBody = {
-      model: "gpt-3.5-turbo",
-      messages: [
-        { role: "system", content: "You are a helpful assistant." },
-        { role: "user", content: question },
-      ],
+      model: "gpt-3.5-turbo-1106",
+      messages: updatedMessages,
     };
 
     fetch("https://api.openai.com/v1/chat/completions", {
@@ -22,6 +28,7 @@ const Gpt: React.FC = () => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
+        "OpenAI-Beta": "assistants=v1",
       },
       body: JSON.stringify(requestBody),
     })
@@ -32,30 +39,62 @@ const Gpt: React.FC = () => {
           const content =
             data.choices[0].message.content ??
             "Non sono riuscito a trovare una risposta.";
-          setResponse(content);
+          const updatedResponses = [
+            ...updatedMessages,
+            { role: "assistant", content },
+          ];
+          setResponse(updatedResponses);
         } else {
-          setResponse("La risposta non contiene dati validi.");
+          setResponse([
+            ...updatedMessages,
+            {
+              role: "assistant",
+              content: "La risposta non contiene dati validi.",
+            },
+          ]);
         }
       })
       .catch((error) => {
         setIsLoading(false);
         console.error("Errore durante il fetching della completion: ", error);
-        setResponse("Si è verificato un errore nel recupero della risposta.");
+        setResponse([
+          ...updatedMessages,
+          {
+            role: "assistant",
+            content: "Si è verificato un errore nel recupero della risposta.",
+          },
+        ]);
       });
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     fetchCompletion(input);
+    setInput("");
   };
 
   return (
     <div>
+      {isLoading ? (
+        <Spinner animation="grow" className="bg-success" />
+      ) : (
+        response.map((msg, index) => (
+          <div
+            key={index}
+            className={`bg-white rounded-4 mt-3 mb-4 ${
+              msg.role === "user" ? "text-primary" : "text-secondary"
+            }`}
+          >
+            {msg.content}
+          </div>
+        ))
+      )}
       <p className="text-success text-with-white-border fs-2">
         Hi! Enter your request here:
       </p>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="mb-5">
         <input
+          ref={inputRef}
           className="rounded-4 border-warning"
           type="text"
           value={input}
@@ -68,11 +107,6 @@ const Gpt: React.FC = () => {
           Ask me
         </button>
       </form>
-      {isLoading ? (
-        <Spinner animation="grow" className="bg-success" />
-      ) : (
-        <div className="bg-white rounded-4 mt-3 mb-5">{response}</div>
-      )}
     </div>
   );
 };
