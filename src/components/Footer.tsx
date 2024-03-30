@@ -27,7 +27,7 @@ const Footer = () => {
   const mobileBottomStyles = { fontSize: "0.6em" };
 
   return (
-    <Row className="fixed-bottom bg-secondary text-light py-2 md-py-0">
+    <Row className="fixed-bottom bg-success text-light py-2 md-py-0">
       <Col style={isMobile ? mobileBottomStyles : desktopBottomStyles}>
         {scriptResult}
       </Col>
