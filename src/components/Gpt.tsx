@@ -8,7 +8,7 @@ const Gpt: React.FC = () => {
 
   function fetchCompletion(question: string) {
     setIsLoading(true);
-    const apiKey = import.meta.env.VITE_;
+    const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
     const requestBody = {
       model: "gpt-3.5-turbo",
       messages: [
