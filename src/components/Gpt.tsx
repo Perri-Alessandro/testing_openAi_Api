@@ -99,7 +99,7 @@ const Gpt = () => {
         ))
       )}
       <p className="text-success text-with-white-border fs-2">
-        Hi! Enter your request here:
+        Enter your request here
       </p>
       <form onSubmit={handleSubmit} ref={formRef} className="mb-5 pb-4">
         <input
