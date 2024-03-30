@@ -20,7 +20,7 @@ const Gpt = () => {
     }
   }, [response]);
 
-  function fetchCompletion(question: string) {
+  const fetchCompletion = (question: string) => {
     setIsLoading(true);
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
     const updatedMessages = [...response, { role: "user", content: question }];
@@ -74,7 +74,7 @@ const Gpt = () => {
           },
         ]);
       });
-  }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
