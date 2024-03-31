@@ -10,7 +10,7 @@ const Footer = () => {
     const eccolo =
       "©" +
       annoCorrente +
-      " Polkadot Assistant. All rights reserved. Created by Perri Alessandro";
+      " Personal Assistant. All rights reserved. Created by Perri Alessandro";
 
     setScriptResult(eccolo);
 
